@@ -1,0 +1,14 @@
+{
+  "name": "image-browser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "内网图片浏览器 — 内网跑 CLI，手机扫码看图",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:relay": "npm -w packages/relay run dev",
+    "dev:cli": "npm -w packages/cli run dev",
+    "build": "npm -w packages/cli run build && npm -w packages/relay run build"
+  }
+}
