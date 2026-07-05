@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -6,7 +7,7 @@ import cors from 'cors';
 import path from 'path';
 
 // ====== 配置 ======
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = parseInt(process.env.PORT || '4190', 10);
 const RELAY_SECRET = process.env.RELAY_SECRET;
 
 if (!RELAY_SECRET) {
@@ -21,7 +22,7 @@ const app = express();
 app.use(cors());
 
 // 内置 viewer 静态页面
-const viewerPath = path.resolve(__dirname, '../../viewer/dist');
+const viewerPath = process.env.VIEWER_PATH || path.resolve(__dirname, '../../viewer/dist');
 app.use(express.static(viewerPath));
 
 const httpServer = createServer(app);

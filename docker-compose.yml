@@ -1,0 +1,17 @@
+# ============================================================
+# image-browser relay — Docker Compose 部署
+# 启动: docker compose up -d
+# 查看日志: docker compose logs -f
+# 停止: docker compose down
+# ============================================================
+
+services:
+  relay:
+    build: .
+    image: image-browser-relay:latest
+    container_name: image-browser-relay
+    ports:
+      - "${PORT:-4190}:${PORT:-4190}"
+    env_file:
+      - ./packages/relay/.env
+    restart: unless-stopped
