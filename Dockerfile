@@ -5,7 +5,7 @@
 # ============================================================
 
 # ---- 阶段 1: 构建 ----
-FROM node:22-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /build
 
@@ -29,7 +29,7 @@ RUN npm -w packages/relay run build
 RUN npm prune --omit=dev
 
 # ---- 阶段 2: 运行 ----
-FROM node:22-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 

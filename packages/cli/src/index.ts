@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { io, Socket } from 'socket.io-client';
 import QRCode from 'qrcode';
 import fs from 'fs';
@@ -67,16 +68,21 @@ async function main() {
       }
 
       const roomPassword = res.password;
-
-      // 生成二维码
       const qrUrl = `${RELAY_URL}?room=${roomId}&password=${roomPassword}`;
 
-      QRCode.toString(qrUrl, { type: 'terminal', small: true }).then((qrStr) => {
+      // 终端二维码（utf8 纯字符模式，无 ANSI 颜色，手机更容易扫）
+      QRCode.toString(qrUrl, { type: 'utf8', errorCorrectionLevel: 'L' }).then((qrStr) => {
         console.log(qrStr);
       });
 
-      console.log(`🔑 房间密码: ${roomPassword}`);
-      console.log(`📱 扫码或访问: ${qrUrl}\n`);
+      // PNG 文件备份（终端扫不准时用这个）
+      const qrPngPath = path.join(process.cwd(), `qr-${roomId}.png`);
+      QRCode.toFile(qrPngPath, qrUrl, { type: 'png', width: 400 }).then(() => {
+        console.log(`📱 PNG二维码: ${qrPngPath} (终端扫不准的话扫这个)`);
+      });
+
+      console.log(`\n🔑 房间密码: ${roomPassword}`);
+      console.log(`🔗 直接访问: ${qrUrl}\n`);
       console.log('👀 等待手机连接... (Ctrl+C 退出)\n');
     });
   });
